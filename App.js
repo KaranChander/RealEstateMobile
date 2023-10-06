@@ -1,20 +1,68 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import PropertyList from './Components/propertyList/PropertyList';
+import GoogleCitiesList from './Components/GoogleCitiesList';
+
+const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+const OtherStack = createStackNavigator();
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator initialRouteName="PropertyList">
+    <HomeStack.Screen name="PropertyList" component={PropertyList}   options={{ headerShown: false }} />
+    <HomeStack.Screen name="GoogleCitiesList" component={GoogleCitiesList}   options={{ headerShown: false}} />
+  </HomeStack.Navigator>
+);
+
+const OtherStackScreen = () => (
+  <OtherStack.Navigator>
+    <OtherStack.Screen name="Other" component={OtherScreen} />
+    // Add other screens for this stack here
+  </OtherStack.Navigator>
+);
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false, // Add this line
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+            if (route.name === 'Screen1') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'Screen2') {
+              iconName = focused ? 'search' : 'search-outline';
+            } else if (route.name === 'Screen3') {
+              iconName = focused ? 'add' : 'add-outline';
+            } else if (route.name === 'Screen4') {
+              iconName = focused ? 'notifications' : 'notifications-outline';
+            } else if (route.name === 'Screen5') {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: '#008000',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <Tab.Screen name="Screen1" component={HomeStackScreen} />
+        <Tab.Screen name="Screen2" component={HomeStackScreen} />
+        <Tab.Screen name="Screen3" component={HomeStackScreen} />
+        <Tab.Screen name="Screen4" component={HomeStackScreen} />
+        <Tab.Screen name="Screen5" component={HomeStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
