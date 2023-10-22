@@ -2,14 +2,26 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Header = ({ onSearchPress, onMapPress, type }) => {
-    const title = type === 'properties' ? 'Property List' : 'Properties';
+  let title;
+  switch(type) {
+    case 'properties':
+      title = 'Property List';
+      break;
+    case 'map':
+      title = 'Map'
+    default:
+      title = 'Properties';
+  }    
     const showIcons = type === 'properties';
     const showBackButton = type !== 'properties';
     const navigation = useNavigation();
 
   return (
+    <SafeAreaView style={styles.safeArea}>
+    {/* <View style={styles.notchArea} /> */}
     <View style={styles.header}>
       <View style={styles.left} />
       {showBackButton && (
@@ -26,29 +38,32 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
             <TouchableOpacity style={styles.icon} onPress={onMapPress}>
             <Icon name="map" size={30} color="#008000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.icon} onPress={onSearchPress}>
+          {/* <TouchableOpacity style={styles.icon} onPress={onSearchPress}>
             <Icon name="search" size={30} color="#008000" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
          
         </View>
       )}
       </View>      
+     </SafeAreaView>
+
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: '#ffffff', // Change this to the color you want
+  },
+  notchArea: {
+    backgroundColor: '#ffffff', // Change this to the color you want
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 14,
+    padding: 0, // Reduce padding here
     backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    height: 60,
+    height: 30,
   },
   left: {
     width: 30, // Adjust this width to balance the search icon
@@ -68,6 +83,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flexDirection: 'row',
+    marginRight: 10
   },
   icon: {
     marginHorizontal: 5, // Add margin here

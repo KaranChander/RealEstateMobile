@@ -6,7 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropertyList from './Components/propertyList/PropertyList';
-import GoogleCitiesList from './Components/GoogleCitiesList';
+import SearchBar from './Components/SearchBar';
+import PropertiesMap from './Components/propertyList/PropertiesMap';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -15,7 +16,9 @@ const OtherStack = createStackNavigator();
 const HomeStackScreen = () => (
   <HomeStack.Navigator initialRouteName="PropertyList">
     <HomeStack.Screen name="PropertyList" component={PropertyList}   options={{ headerShown: false }} />
-    <HomeStack.Screen name="GoogleCitiesList" component={GoogleCitiesList}   options={{ headerShown: false}} />
+    <HomeStack.Screen name="SearchBar" component={SearchBar}   options={{ headerShown: false, animationEnabled: false}}  />
+    <HomeStack.Screen name="PropertiesMap" component={PropertiesMap}   options={{ headerShown: false}} />
+
   </HomeStack.Navigator>
 );
 
