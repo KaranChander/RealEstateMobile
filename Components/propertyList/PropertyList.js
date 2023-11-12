@@ -107,7 +107,7 @@ const PropertyList = () => {
         navigation.navigate('SearchBar'); // Replace 'SearchScreen' with the name of your search screen
 
         }} onMapPress={() => {
-          navigation.navigate('PropertiesMap')
+          navigation.navigate('PropertiesMap', { propertiesData: propertiesData })
         }} type="properties"></Header>
       <View style={styles.container}>
 
