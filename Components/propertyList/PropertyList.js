@@ -156,7 +156,14 @@ const PropertyList = () => {
       <FlatList
         data={propertiesData}
         keyExtractor={(item) => item.propertyId}
-        renderItem={({ item }) => <PropertyCard property={item} />}
+        renderItem={({ item }) => 
+        <PropertyCard 
+          property={item}
+          onPress={() => {
+            console.log('Card pressed:');
+            navigation.navigate('PropertyDetails', { property: item });
+          }}
+        /> }
       />
       </View>
     </View>
