@@ -2,13 +2,17 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const BuyRentHold = ({ data }) => {
+const BuyRentHold = ({ data, property, defaults }) => {
 
   const navigation = useNavigation();
 
   const handleEditClick = () => {
+
     console.log("Edit clicked!");
-    navigation.navigate('EditCalculator', { property: "property"});
+    console.log(data);
+    console.log(defaults);
+
+    navigation.navigate('EditCalculator', { property, defaults, data});
   };
   
   return (

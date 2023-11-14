@@ -9,66 +9,32 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const EditCalculator = () => {
+const EditCalculator = ({ route }) => {
+  const { property, defaults, data } = route.params;
+  console.log("Editing settings !!!");
+  console.log(defaults);
+
   const navigation = useNavigation();
 
-  const [propertyInfo, setPropertyInfo] = useState({
-    vacancyRate: "5",
-    managementRate: "5",
-    advertizingCost: "100",
-    annualAppreciationRate: "3",
-  });
+  const [propertyInfo, setPropertyInfo] = useState(defaults.propertyInfo);
 
-  const [purchaseInfo, setPurchaseInfo] = useState({
-    repairs: "5000",
-    repairsContingency: "1000",
-    lenderFee: "1500",
-    brokerFee: "5000",
-    environmentals: "0",
-    inspections: "700",
-    appraisals: "700",
-    misc: "500",
-    transferTax: "0",
-    legal: "500",
-  });
+  const [purchaseInfo, setPurchaseInfo] = useState(defaults.purchaseInfo);
 
-  const [incomeInfo, setIncomeInfo] = useState({
-    grossRents: "58800",
-    parking: "0",
-    storage: "0",
-    laundry: "0",
-    other: "0",
-  });
+  const [incomeInfo, setIncomeInfo] = useState(defaults.incomeInfo);
 
-  const [financing, setFinancing] = useState({
-    firstMtgPrincipleAmount:  "355300" ,
-    firstMtgInterestRate: "8",
-    firstMtgAmortizationPeriod: "30",
-    firstMtgCMHCFee: "0",
-    secondMtgPrincipleAmount: "0",
-    secondMtgInterestRate: "12",
-    secondMtgAmortizationPeriod: "9999",
-  });
+  const [financing, setFinancing] = useState(defaults.financing);
 
-  const [operating, setOperating] = useState({
-    repairsRate : "2940", 
-    electricity: "0",  
-    gas : "0",   
-    lawn: "0",	
-    water: "1200",
-    cable: "1200",
-    caretaking: "2880" , 
-    advertizing:  "180", 
-    associationFees : "0",
-    trashRemoval: "0",		
-    miscellaneous: "0",		
-    commonAreaMaintenance: "0", 
-    capitalImprovements: "0", 
-    accounting: "0",		
-    legal: "0",		
-    badDebts: "0",		
-    other : "0",		
-  });
+  const [operating, setOperating] = useState(defaults.operating);
+
+  useEffect(() => {
+    console.log('Defaults:', defaults);
+    // Update state when route parameters change
+    setPropertyInfo(defaults.propertyInfo);
+    setPurchaseInfo(defaults.purchaseInfo);
+    setIncomeInfo(defaults.incomeInfo);
+    setFinancing(defaults.financing);
+    setOperating(defaults.operating);
+  }, [defaults]);
 
   const handleOperatingChange = (key, value) => {
     setOperating({ ...operating, [key]: value });
@@ -90,12 +56,43 @@ const EditCalculator = () => {
     setPurchaseInfo({ ...purchaseInfo, [key]: value });
   };
 
-  const handleSave = () => {
-    // Add logic to save the data, maybe through an API call or storage mechanism
-    // For instance: Save the data to a backend API or local storage
-    console.log('Data saved!');
-    // You can put the saving logic here
+  const handleSave = async () => {
+    try {
+      const apiUrl = `http://18.205.25.241/calculator/?property_id=${property.property_id}`;
+  
+      const requestBody = {
+        // Include the data you want to send to the API in the request body
+        propertyInfo,
+        purchaseInfo,
+        incomeInfo,
+        financing,
+        operating,
+      };
+  
+      const response = await fetch(apiUrl, {
+        method: 'POST', // or 'PUT' if applicable
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any other headers required by your API
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json(); // Await the JSON parsing
+        console.log('Data saved successfully!');
+        console.log(responseData);
+        navigation.navigate("PropertyDetails", {property: property, propertyData: property, calculatorData: responseData, defaultsData: responseData.defaults});
+        
+      } else {
+        console.error('Failed to save data. Server returned:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while saving data:', error.message);
+    }
   };
+  
+  
 
   return (
     <ScrollView>
@@ -115,7 +112,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Vacancy Rate</Text>
             <TextInput
               style={styles.c2}
-              value={propertyInfo.vacancyRate}
+              value={propertyInfo.vacancyRate.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePropertyInfoChange("vacancyRate", text)
               }
@@ -126,7 +124,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Management Rate</Text>
             <TextInput
               style={styles.c2}
-              value={propertyInfo.managementRate}
+              value={propertyInfo.managementRate.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePropertyInfoChange("managementRate", text)
               }
@@ -137,7 +136,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Advertizing Cost per Vacancy</Text>
             <TextInput
               style={styles.c2}
-              value={propertyInfo.advertizingCost}
+              keyboardType="numeric"
+              value={propertyInfo.advertizingCost.toString()}
               onChangeText={(text) =>
                 handlePropertyInfoChange("advertizingCost", text)
               }
@@ -148,7 +148,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Annual Appreciation Rate</Text>
             <TextInput
               style={styles.c2}
-              value={propertyInfo.annualAppreciationRate}
+              value={propertyInfo.annualAppreciationRate.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePropertyInfoChange("annualAppreciationRate", text)
               }
@@ -166,7 +167,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Repairs</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.repairs}
+              value={purchaseInfo.repairs.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handlePurchaseInfoChange("repairs", text)}
             ></TextInput>
           </View>
@@ -175,7 +177,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Repairs Contingency</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.repairsContingency}
+              value={purchaseInfo.repairsContingency.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("repairsContingency", text)
               }
@@ -186,7 +189,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Lender Fee</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.lenderFee}
+              value={purchaseInfo.lenderFee.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("lenderFee", text)
               }
@@ -197,7 +201,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Broker Fee</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.brokerFee}
+              value={purchaseInfo.brokerFee.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("brokerFee", text)
               }
@@ -208,7 +213,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Environmentals</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.environmentals}
+              value={purchaseInfo.environmentals.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("environmentals", text)
               }
@@ -219,7 +225,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Inspections or Engineer Report</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.inspections}
+              value={purchaseInfo.inspections.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("inspections", text)
               }
@@ -230,7 +237,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Appraisals</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.appraisals}
+              value={purchaseInfo.appraisals.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("appraisals", text)
               }
@@ -241,7 +249,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Misc</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.misc}
+              value={purchaseInfo.misc.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handlePurchaseInfoChange("misc", text)}
             ></TextInput>
           </View>
@@ -250,7 +259,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Transfer Tax</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.transferTax}
+              value={purchaseInfo.transferTax.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handlePurchaseInfoChange("transferTax", text)
               }
@@ -261,7 +271,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Legal</Text>
             <TextInput
               style={styles.c2}
-              value={purchaseInfo.legal}
+              value={purchaseInfo.legal.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handlePurchaseInfoChange("legal", text)}
             ></TextInput>
           </View>
@@ -276,7 +287,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Gross Rents</Text>
             <TextInput
               style={styles.c2}
-              value={incomeInfo.grossRents}
+              value={incomeInfo.grossRents.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleIncomeInfoChange("grossRents", text)
               }
@@ -287,7 +299,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Parking</Text>
             <TextInput
               style={styles.c2}
-              value={incomeInfo.parking}
+              value={incomeInfo.parking.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handleIncomeInfoChange("parking", text)}
             />
           </View>
@@ -296,7 +309,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Storage</Text>
             <TextInput
               style={styles.c2}
-              value={incomeInfo.storage}
+              value={incomeInfo.storage.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handleIncomeInfoChange("storage", text)}
             />
           </View>
@@ -305,7 +319,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Laundry / Vending</Text>
             <TextInput
               style={styles.c2}
-              value={incomeInfo.laundry}
+              value={incomeInfo.laundry.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handleIncomeInfoChange("laundry", text)}
             />
           </View>
@@ -314,7 +329,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Other</Text>
             <TextInput
               style={styles.c2}
-              value={incomeInfo.other}
+              value={incomeInfo.other.toString()}
+              keyboardType="numeric"
               onChangeText={(text) => handleIncomeInfoChange("other", text)}
             />
           </View>
@@ -329,7 +345,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>1st Mtg Principle Borrowed</Text>
             <TextInput
               style={styles.c2}
-              value={financing.firstMtgPrincipleAmount}
+              value={financing.firstMtgPrincipleAmount.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("firstMtgPrincipleAmount", text)
               }
@@ -340,7 +357,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>1st Mtg Interest Rate</Text>
             <TextInput
               style={styles.c2}
-              value={financing.firstMtgInterestRate}
+              value={financing.firstMtgInterestRate.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("firstMtgInterestRate", text)
               }
@@ -351,7 +369,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>1st Mtg Amortization</Text>
             <TextInput
               style={styles.c2}
-              value={financing.firstMtgAmortizationPeriod}
+              value={financing.firstMtgAmortizationPeriod.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("firstMtgAmortizationPeriod", text)
               }
@@ -364,7 +383,8 @@ const EditCalculator = () => {
             </Text>
             <TextInput
               style={styles.c2}
-              value={financing.firstMtgCMHCFee}
+              value={financing.firstMtgCMHCFee.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("firstMtgCMHCFee", text)
               }
@@ -375,7 +395,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>2nd Mtg Principle Amount 2nd Mtg</Text>
             <TextInput
               style={styles.c2}
-              value={financing.secondMtgPrincipleAmount}
+              value={financing.secondMtgPrincipleAmount.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("secondMtgPrincipleAmount", text)
               }
@@ -386,7 +407,8 @@ const EditCalculator = () => {
             <Text style={styles.c1}>2nd Mtg Interest Rate</Text>
             <TextInput
               style={styles.c2}
-              value={financing.secondMtgAmortizationPeriod}
+              value={financing.secondMtgAmortizationPeriod.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("secondMtgAmortizationPeriod", text)
               }
@@ -399,7 +421,8 @@ const EditCalculator = () => {
             </Text>
             <TextInput
               style={styles.c2}
-              value={financing.secondMtgAmortizationPeriod}
+              value={financing.secondMtgAmortizationPeriod.toString()}
+              keyboardType="numeric"
               onChangeText={(text) =>
                 handleFinancingChange("secondMtgAmortizationPeriod", text)
               }
@@ -412,22 +435,13 @@ const EditCalculator = () => {
         <Text style={styles.heading}>Operating Expenses(Annual)</Text>
 
         <View style={styles.c3}>
-
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>Caretaking</Text>
             <TextInput
               style={styles.c2}
-              value={operating.caretaking}
-              onChangeText={(text) => handleOperatingChange('caretaking', text)}
-            />
-          </View>
-
-          <View style={styles.rowContainer}>
-            <Text style={styles.c1}>Advertizing</Text>
-            <TextInput
-              style={styles.c2}
-              value={operating.advertizing}
-              onChangeText={(text) => handleOperatingChange('advertizing', text)}
+              value={operating.caretaking.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("caretaking", text)}
             />
           </View>
 
@@ -435,8 +449,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Association Fees</Text>
             <TextInput
               style={styles.c2}
-              value={operating.associationFees}
-              onChangeText={(text) => handleOperatingChange('associationFees', text)}
+              value={operating.associationFees.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("associationFees", text)
+              }
             />
           </View>
 
@@ -444,8 +461,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Trash Removal</Text>
             <TextInput
               style={styles.c2}
-              value={operating.trashRemoval}
-              onChangeText={(text) => handleOperatingChange('trashRemoval', text)}
+              value={operating.trashRemoval.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("trashRemoval", text)
+              }
             />
           </View>
 
@@ -453,8 +473,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Accounting</Text>
             <TextInput
               style={styles.c2}
-              value={operating.accounting}
-              onChangeText={(text) => handleOperatingChange('accounting', text)}
+              value={operating.accounting.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("accounting", text)}
             />
           </View>
 
@@ -462,8 +483,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Common Area Maintenance</Text>
             <TextInput
               style={styles.c2}
-              value={operating.commonAreaMaintenance}
-              onChangeText={(text) => handleOperatingChange('commonAreaMaintenance', text)}
+              value={operating.commonAreaMaintenance.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("commonAreaMaintenance", text)
+              }
             />
           </View>
 
@@ -471,8 +495,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Capital Improvements</Text>
             <TextInput
               style={styles.c2}
-              value={operating.capitalImprovements}
-              onChangeText={(text) => handleOperatingChange('capitalImprovements', text)}
+              value={operating.capitalImprovements.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("capitalImprovements", text)
+              }
             />
           </View>
 
@@ -480,8 +507,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Legal</Text>
             <TextInput
               style={styles.c2}
-              value={operating.legal}
-              onChangeText={(text) => handleOperatingChange('legal', text)}
+              value={operating.legal.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("legal", text)}
             />
           </View>
 
@@ -489,8 +517,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Bad Debts</Text>
             <TextInput
               style={styles.c2}
-              value={operating.badDebts}
-              onChangeText={(text) => handleOperatingChange('badDebts', text)}
+              value={operating.badDebts.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("badDebts", text)}
             />
           </View>
 
@@ -498,8 +527,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Cable</Text>
             <TextInput
               style={styles.c2}
-              value={operating.cable}
-              onChangeText={(text) => handleOperatingChange('cable', text)}
+              value={operating.cable.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("cable", text)}
             />
           </View>
 
@@ -507,8 +537,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Lawn / Snow Maintenance </Text>
             <TextInput
               style={styles.c2}
-              value={operating.lawn}
-              onChangeText={(text) => handleOperatingChange('lawn', text)}
+              value={operating.lawn.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("lawn", text)}
             />
           </View>
 
@@ -516,8 +547,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Water / Sewer</Text>
             <TextInput
               style={styles.c2}
-              value={operating.water}
-              onChangeText={(text) => handleOperatingChange('water', text)}
+              value={operating.water.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("water", text)}
             />
           </View>
 
@@ -525,8 +557,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Gas</Text>
             <TextInput
               style={styles.c2}
-              value={operating.gas}
-              onChangeText={(text) => handleOperatingChange('gas', text)}
+              value={operating.gas.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("gas", text)}
             />
           </View>
 
@@ -534,8 +567,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Electricity</Text>
             <TextInput
               style={styles.c2}
-              value={operating.electricity}
-              onChangeText={(text) => handleOperatingChange('electricity', text)}
+              value={operating.electricity.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("electricity", text)
+              }
             />
           </View>
 
@@ -543,8 +579,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Repairs Rate</Text>
             <TextInput
               style={styles.c2}
-              value={operating.repairsRate}
-              onChangeText={(text) => handleOperatingChange('repairsRate', text)}
+              value={operating.repairsRate.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("repairsRate", text)
+              }
             />
           </View>
 
@@ -552,8 +591,11 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Miscellaneous</Text>
             <TextInput
               style={styles.c2}
-              value={operating.miscellaneous}
-              onChangeText={(text) => handleOperatingChange('miscellaneous', text)}
+              value={operating.miscellaneous.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleOperatingChange("miscellaneous", text)
+              }
             />
           </View>
 
@@ -561,8 +603,9 @@ const EditCalculator = () => {
             <Text style={styles.c1}>Other</Text>
             <TextInput
               style={styles.c2}
-              value={operating.other}
-              onChangeText={(text) => handleOperatingChange('other', text)}
+              value={operating.other.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) => handleOperatingChange("other", text)}
             />
           </View>
         </View>
@@ -576,17 +619,17 @@ const EditCalculator = () => {
 };
 
 const styles = StyleSheet.create({
-    saveButton: {
-        backgroundColor: 'blue',
-        padding: 15,
-        margin: 20,
-        alignItems: 'center',
-        borderRadius: 10,
-      },
-      saveButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-      },
+  saveButton: {
+    backgroundColor: "blue",
+    padding: 15,
+    margin: 20,
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  saveButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
   heading: {
     fontSize: 20,
     fontWeight: "bold",
