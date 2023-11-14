@@ -10,6 +10,8 @@ const PropertiesMap = ({ onSearchPress, onMapPress, type }) => {
 const route = useRoute();
 const propertiesData = route.params?.propertiesData;
 console.log("CHeck")
+const colors = ['#50C878', '#D30000']; // Replace with your desired colors
+const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
 console.log(propertiesData)
   return (
@@ -24,7 +26,10 @@ console.log(propertiesData)
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-    {propertiesData.map((property, index) => (
+    {propertiesData.map((property, index) => {
+      const color = property.list_price < 800000 ? "#D30000" : "#50C878" 
+      const icon = property.list_price < 800000 ? "caretdown" : "caretup" 
+      return (
       <Marker
         key={index}
         coordinate={{ latitude: property.location.address.coordinate.lat, longitude: property.location.address.coordinate.lon }}
@@ -32,7 +37,7 @@ console.log(propertiesData)
         <View style={{ alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', backgroundColor: 'white', padding: 5, borderRadius: 10 }}>
           <Text>{"$"+(property.list_price).toLocaleString()}</Text>
-          <Icon name="caretup" size={16} color="#50C878" />
+          <Icon name={icon} size={14} color={color} />
           {/* <Image
             source={require('./path-to-your-green-arrow.png')} // replace with your local image or uri
             style={{ width: 20, height: 20 }}
@@ -40,8 +45,8 @@ console.log(propertiesData)
         </View>
         <View style={{ width: 0, height: 0, backgroundColor: 'transparent', borderStyle: 'solid', borderLeftWidth: 10, borderRightWidth: 10, borderBottomWidth: 20, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: 'white', transform: [{ rotate: '180deg'}] }} />
       </View>
-    </Marker>
-  ))}
+    </Marker>)
+})}
          {/* <Marker
           coordinate={{
             latitude: 42.3601,

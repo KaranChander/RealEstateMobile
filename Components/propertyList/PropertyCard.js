@@ -7,7 +7,10 @@ const PropertyCard = ({ property }) => {
     <View style={styles.card}>
        <Image style={styles.image} source={{ uri: property.primary_photo?.href }} resizeMode="cover"/>
       <View style={styles.textContainer}>
-      <Text style={styles.title}>{"$"+(property.list_price).toLocaleString()}</Text>
+      <View style={styles.row}>
+          <Text style={styles.title}>{"$"+(property.list_price).toLocaleString()}</Text>
+          <Text style={styles.cashFlow}>{"$387/mo Cash Flow"}</Text>
+        </View>
       <Text style={styles.details}>{property.location?.address?.line + " " + property.location?.address?.city + " " + property.location?.address?.state + " " + property.location?.address?.postal_code}</Text>
       <View style={styles.row}>
         <Icon name="bed" size={20} color="#808080" />
@@ -58,6 +61,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 0,
+  },
+  cashFlow: {
+    fontWeight: 'semibold',
+    fontSize: 16,
+    margin: 10,
+    marginLeft: 5,
   },
 });
 
