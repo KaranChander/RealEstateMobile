@@ -5,34 +5,53 @@ import PriceInsights from './fragments/PriceInsights';
 import BuyRentHold from './fragments/BuyRentHold';
 import HomeFacts from './fragments/HomeFacts';
 import About from './fragments/About';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
 
-const PropertyDetails = ({ route, navigation }) => {
+
+const PropertyDetails = ({ route, navigation,}) => {
   const { property } = route.params;
   const propertyId = property.property_id;
   const [data, setData] = useState(null);
   const [calculator, setCalculator] = useState(null);
+  const [defaults, setDefaults] = useState(null);
 
-  useEffect(() => {
-    // Make both API calls in parallel
-    const apiUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/property/details?property_id=${propertyId}`;
-    const calUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/calculator?property_id=${propertyId}`;
+  // Use useFocusEffect instead of useEffect
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset the state
+      setData(null);
+      setCalculator(null);
+      setDefaults(null);
 
-    Promise.all([
-      fetch(apiUrl).then((response) => response.json()),
-      fetch(calUrl).then((response) => response.json())
-    ])
-    .then(([apiData, calData]) => {
-      // Update the state with the retrieved data
-      console.log("details from api call received");
-      setData(apiData.data.home);
-      console.log("details from calculator api call received");
-      console.log(calData);
-      setCalculator(calData);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-    });
-  }, [property]); // This effect will re-run whenever 'property' changes
+      // Make both API calls in parallel
+      if (route.params.propertyData && route.params.calculatorData && route.params.defaultsData) {
+        setData(route.params.propertyData);
+        setCalculator(route.params.calculatorData);
+        setDefaults(route.params.defaultsData);
+      } else {
+        const apiUrl = `http://18.205.25.241/property/details?property_id=${propertyId}`;
+        const calUrl = `http://18.205.25.241/calculator?property_id=${propertyId}`;
+
+        Promise.all([
+          fetch(apiUrl).then((response) => response.json()),
+          fetch(calUrl).then((response) => response.json())
+        ])
+          .then(([apiData, calData]) => {
+            // Update the state with the retrieved data
+            console.log("details from api call received");
+            setData(apiData.data.home);
+            console.log("details from calculator api call received");
+            console.log(calData.defaults);
+
+            setCalculator(calData);
+            setDefaults(calData.defaults);
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+          });
+      }
+    }, [property, route]) // This effect will re-run whenever 'property' changes
+  );
 
   return (
     <ScrollView>
@@ -43,7 +62,7 @@ const PropertyDetails = ({ route, navigation }) => {
       <Image style={styles.image} source={data ? { uri: data.photos[0].href } : null} resizeMode="cover" />
       {/* Property Name */}
       {data && <HeroSection property={data} />}
-      {calculator && <BuyRentHold data={calculator} />}
+      {calculator && data && defaults && <BuyRentHold data={calculator} property={data} defaults={defaults} />}
       {data && <PriceInsights data={data}  />}
       {data && <HomeFacts data={data} />}
       {data && <About data={data}  />}

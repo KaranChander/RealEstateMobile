@@ -9,6 +9,7 @@ import PropertyList from './Components/propertyList/PropertyList';
 import SearchBar from './Components/SearchBar';
 import PropertiesMap from './Components/propertyList/PropertiesMap';
 import PropertyDetails from './Components/propertyDetail/propertyDetails';
+import EditCalculator from './Components/editCalculator/EditCalculator';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -20,6 +21,7 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="SearchBar" component={SearchBar}   options={{ headerShown: false, animationEnabled: false}}  />
     <HomeStack.Screen name="PropertiesMap" component={PropertiesMap}   options={{ headerShown: false}} />
     <HomeStack.Screen name="PropertyDetails" component={PropertyDetails}   options={{ headerShown: false}} />
+    <HomeStack.Screen name="EditCalculator" component={EditCalculator}   options={{ headerShown: false}} />
   </HomeStack.Navigator>
 );
 
