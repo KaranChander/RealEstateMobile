@@ -6,7 +6,7 @@ import BuyRentHold from './fragments/BuyRentHold';
 import HomeFacts from './fragments/HomeFacts';
 import About from './fragments/About';
 
-const PropertyDetails = ({ route, navigation }) => {
+const PropertyDetails = ({ route, navigation, dataProvided, calculatorData}) => {
   const { property } = route.params;
   const propertyId = property.property_id;
   const [data, setData] = useState(null);
@@ -14,25 +14,32 @@ const PropertyDetails = ({ route, navigation }) => {
 
   useEffect(() => {
     // Make both API calls in parallel
-    const apiUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/property/details?property_id=${propertyId}`;
-    const calUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/calculator?property_id=${propertyId}`;
+    if (dataProvided && calculatorData) {
+      setData(dataProvided);
+      setCalculator(calculatorData);
+    } else {
 
-    Promise.all([
-      fetch(apiUrl).then((response) => response.json()),
-      fetch(calUrl).then((response) => response.json())
-    ])
-    .then(([apiData, calData]) => {
-      // Update the state with the retrieved data
-      console.log("details from api call received");
-      setData(apiData.data.home);
-      console.log("details from calculator api call received");
-      console.log(calData);
-      setCalculator(calData);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-    });
-  }, [property]); // This effect will re-run whenever 'property' changes
+      const apiUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/property/details?property_id=${propertyId}`;
+      const calUrl = `http://calculator-env.eba-62rnfbat.us-east-1.elasticbeanstalk.com/calculator?property_id=${propertyId}`;
+
+      Promise.all([
+        fetch(apiUrl).then((response) => response.json()),
+        fetch(calUrl).then((response) => response.json())
+      ])
+      .then(([apiData, calData]) => {
+        // Update the state with the retrieved data
+        console.log("details from api call received");
+        setData(apiData.data.home);
+        console.log("details from calculator api call received");
+        console.log(calData);
+        setCalculator(calData);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+
+    }
+  }, [property, dataProvided, calculatorData]); // This effect will re-run whenever 'property' changes
 
   return (
     <ScrollView>
@@ -43,7 +50,7 @@ const PropertyDetails = ({ route, navigation }) => {
       <Image style={styles.image} source={data ? { uri: data.photos[0].href } : null} resizeMode="cover" />
       {/* Property Name */}
       {data && <HeroSection property={data} />}
-      {calculator && <BuyRentHold data={calculator} />}
+      {calculator && <BuyRentHold data={calculator} property={data} calculator={calculator} />}
       {data && <PriceInsights data={data}  />}
       {data && <HomeFacts data={data} />}
       {data && <About data={data}  />}

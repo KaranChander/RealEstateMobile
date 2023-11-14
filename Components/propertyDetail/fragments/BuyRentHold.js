@@ -1,12 +1,26 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const BuyRentHold = ({ data }) => {
 
+  const navigation = useNavigation();
+
+  const handleEditClick = () => {
+    console.log("Edit clicked!");
+    navigation.navigate('EditCalculator', { property: "property"});
+  };
   
   return (
     <View>
-      <Text style={styles.heading}>Buy Rent Hold</Text>
+
+      <View style={styles.headingContainer}>
+        <Text style={styles.heading}>Buy Rent Hold</Text>
+        <TouchableOpacity onPress={handleEditClick}>
+          <Text style={styles.editText}>Edit</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.mainContainer}>
         <View style={styles.leftContainer}>
           <Text style={styles.left} numberOfLines={1}>Annual Profit/ Loss</Text>
@@ -46,12 +60,21 @@ const BuyRentHold = ({ data }) => {
 };
 
 const styles = StyleSheet.create({
+  headingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 22,
+  },
   heading: {
     fontWeight: "bold",
     fontSize: 20,
     paddingBottom: 10,
     paddingTop: 10,
-    paddingLeft: 22,
+  },
+  editText: {
+    color: "blue", // You can change the color to fit your design
+    fontSize: 16,
   },
 
   mainContainer: {
