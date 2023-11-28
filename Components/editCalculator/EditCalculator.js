@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import PercentageSlider from './PercentageSlider';
 
 const EditCalculator = ({ route }) => {
   const { property, defaults, data } = route.params;
@@ -110,25 +111,17 @@ const EditCalculator = ({ route }) => {
         <View style={styles.c3}>
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>Vacancy Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={propertyInfo.vacancyRate.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handlePropertyInfoChange("vacancyRate", text)
-              }
+            <PercentageSlider
+              value={propertyInfo.vacancyRate}
+              onValueChange={(value) => handlePropertyInfoChange("vacancyRate", value)}
             />
           </View>
 
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>Management Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={propertyInfo.managementRate.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handlePropertyInfoChange("managementRate", text)
-              }
+            <PercentageSlider
+              value={propertyInfo.managementRate}
+              onValueChange={(value) => handlePropertyInfoChange("managementRate", value)}
             />
           </View>
 
@@ -146,13 +139,9 @@ const EditCalculator = ({ route }) => {
 
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>Annual Appreciation Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={propertyInfo.annualAppreciationRate.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handlePropertyInfoChange("annualAppreciationRate", text)
-              }
+            <PercentageSlider
+              value={propertyInfo.annualAppreciationRate}
+              onValueChange={(value) => handlePropertyInfoChange("annualAppreciationRate", value)}
             />
           </View>
           {/* Add more fields */}
@@ -355,13 +344,9 @@ const EditCalculator = ({ route }) => {
 
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>1st Mtg Interest Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={financing.firstMtgInterestRate.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handleFinancingChange("firstMtgInterestRate", text)
-              }
+            <PercentageSlider
+              value={financing.firstMtgInterestRate}
+              onValueChange={(value) => handleFinancingChange("firstMtgInterestRate", value)}
             />
           </View>
 
@@ -381,18 +366,14 @@ const EditCalculator = ({ route }) => {
             <Text style={styles.c1}>
               Period 1st Mtg CMHC Fee (% of Principle)
             </Text>
-            <TextInput
-              style={styles.c2}
-              value={financing.firstMtgCMHCFee.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handleFinancingChange("firstMtgCMHCFee", text)
-              }
+            <PercentageSlider
+              value={financing.firstMtgCMHCFee}
+              onValueChange={(value) => handleFinancingChange("firstMtgCMHCFee", value)}
             />
           </View>
 
           <View style={styles.rowContainer}>
-            <Text style={styles.c1}>2nd Mtg Principle Amount 2nd Mtg</Text>
+            <Text style={styles.c1}>2nd Mtg Principle Amount</Text>
             <TextInput
               style={styles.c2}
               value={financing.secondMtgPrincipleAmount.toString()}
@@ -405,13 +386,9 @@ const EditCalculator = ({ route }) => {
 
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>2nd Mtg Interest Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={financing.secondMtgAmortizationPeriod.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handleFinancingChange("secondMtgAmortizationPeriod", text)
-              }
+            <PercentageSlider
+              value={financing.secondMtgAmortizationRate}
+              onValueChange={(value) => handleFinancingChange("secondMtgAmortizationPeriod", value)}
             />
           </View>
 
@@ -435,6 +412,16 @@ const EditCalculator = ({ route }) => {
         <Text style={styles.heading}>Operating Expenses(Annual)</Text>
 
         <View style={styles.c3}>
+        <View style={styles.rowContainer}>
+            <Text style={styles.c1}>Repairs Rate</Text>
+            <PercentageSlider
+              value={operating.repairsRate}
+              onValueChange={(text) =>
+                handleOperatingChange("repairsRate", text)
+              }
+            />
+          </View>
+
           <View style={styles.rowContainer}>
             <Text style={styles.c1}>Caretaking</Text>
             <TextInput
@@ -576,18 +563,6 @@ const EditCalculator = ({ route }) => {
           </View>
 
           <View style={styles.rowContainer}>
-            <Text style={styles.c1}>Repairs Rate</Text>
-            <TextInput
-              style={styles.c2}
-              value={operating.repairsRate.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) =>
-                handleOperatingChange("repairsRate", text)
-              }
-            />
-          </View>
-
-          <View style={styles.rowContainer}>
             <Text style={styles.c1}>Miscellaneous</Text>
             <TextInput
               style={styles.c2}
@@ -643,6 +618,7 @@ const styles = StyleSheet.create({
   c1: {
     padding: 5,
     width: "50%",
+    marginTop: "auto"
   },
   c2: {
     padding: 5,
@@ -687,6 +663,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 8,
     marginBottom: 10,
+  },
+  c2_slider: {
+    width: "50%",
   },
 });
 
