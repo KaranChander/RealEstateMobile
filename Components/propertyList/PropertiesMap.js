@@ -12,7 +12,13 @@ const propertiesData = route.params?.propertiesData;
 console.log("CHeck")
 const colors = ['#50C878', '#D30000']; // Replace with your desired colors
 const randomColor = colors[Math.floor(Math.random() * colors.length)];
+const navigation = useNavigation();
 
+const handleMarkerPress = (property) => {
+  // Handle the marker press here
+  navigation.navigate('PropertyDetails', { property: property });
+
+};
 console.log(propertiesData)
   return (
     <View style={styles.container}>
@@ -21,8 +27,8 @@ console.log(propertiesData)
         style={styles.map} 
         provider='google'
         initialRegion={{
-            latitude: 42.3601,
-            longitude: -71.0589,
+            latitude: route.params?.propertyLat,
+            longitude: route.params?.propertyLon ,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
@@ -32,7 +38,8 @@ console.log(propertiesData)
       return (
       <Marker
         key={index}
-        coordinate={{ latitude: property.location.address.coordinate.lat, longitude: property.location.address.coordinate.lon }}
+        coordinate={{ latitude: property.location?.address?.coordinate?.lat ?? 0, longitude: property.location?.address?.coordinate?.lon ?? 0 }}
+        onPress={() => handleMarkerPress(property)}
       >
         <View style={{ alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', backgroundColor: 'white', padding: 5, borderRadius: 10 }}>
@@ -47,6 +54,7 @@ console.log(propertiesData)
       </View>
     </Marker>)
 })}
+
          {/* <Marker
           coordinate={{
             latitude: 42.3601,

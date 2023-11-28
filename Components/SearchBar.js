@@ -25,10 +25,13 @@ const SearchBar = () => {
         </TouchableOpacity>
     <GooglePlacesAutocomplete
           placeholder='Search place'
+          fetchDetails={true}
           onPress={(data, details = null) => {
+            console.log("checking map!!")
+            console.log(details)
             navigation.navigate({
               name: 'PropertyList',
-              params: { post: data },
+              params: { post: details },
               merge: true,
             });
               // 'details' is provided when fetchDetails = true

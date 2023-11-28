@@ -21,6 +21,8 @@ const PropertyList = () => {
     console.log("worked")
     if (route.params?.post) {
       setSelectedPlace(route.params.post);
+      console.log(route.params.post)
+
     }
   }, [route.params?.post]);
   
@@ -43,14 +45,15 @@ const PropertyList = () => {
           offset: 0,
           // lat: locationModel.lat,
           // lon: locationModel.long,
-          city: selectedPlace.terms[0].value,
-          state_code: selectedPlace.terms[1].value,     
+          city: selectedPlace.address_components[0].long_name,
+          state_code: selectedPlace.address_components[2].short_name,     
          status: ['for_sale'],
         //   sort: {field: 'name' },
         }),
       };
         fetch(url, options).then(
-                response => response.json()
+                response => 
+                response.json()
         ).then(responseData => {
                 const properties = [];
                 console.log(responseData)
@@ -107,7 +110,7 @@ const PropertyList = () => {
         navigation.navigate('SearchBar'); // Replace 'SearchScreen' with the name of your search screen
 
         }} onMapPress={() => {
-          navigation.navigate('PropertiesMap', { propertiesData: propertiesData })
+          navigation.navigate('PropertiesMap', { propertiesData: propertiesData, propertyLat: selectedPlace.geometry.location.lat, propertyLon: selectedPlace.geometry.location.lng })
         }} type="properties"></Header>
       <View style={styles.container}>
 
@@ -122,7 +125,7 @@ const PropertyList = () => {
       borderColor: '#999999',
       borderBottomWidth: 1, borderBottomColor: '#999999' 
     }}
-      placeholder={(selectedPlace) ? selectedPlace.description :"Search places"}
+      placeholder={(selectedPlace) ? selectedPlace.address_components[0].long_name + ", " + selectedPlace.address_components[2].short_name  :"Search places"}
 
       searchIcon = {true}
       inputStyle={{

@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-const PropertyCard = ({ property }) => {
-  return (
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+const PropertyCard = ({ property, onPress }) => {  return (
+  <TouchableOpacity onPress={onPress} style={styles.card}>
     <View style={styles.card}>
        <Image style={styles.image} source={{ uri: property.primary_photo?.href }} resizeMode="cover"/>
       <View style={styles.textContainer}>
@@ -21,6 +20,7 @@ const PropertyCard = ({ property }) => {
       <Text style={styles.details}>{(property.description?.lot_sqft??0).toLocaleString()} sq ft</Text> 
       </View> 
     </View>
+    </ TouchableOpacity>
   );
 };
 
