@@ -23,8 +23,8 @@ const PropertyCard = ({ property, onPress }) => {
         </View> 
       </View>
       <Text style={styles.details}>{(property.description?.lot_sqft??0).toLocaleString()} sq ft</Text> 
-      </View> 
-    </View>
+      
+   
     </ TouchableOpacity>
   );
 };
