@@ -11,9 +11,17 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
       title = 'Property List';
       break;
     case 'map':
-      title = 'Map'
+      title = 'Map';
+      break;
+
+    case 'buyRentHold':
+      title = "Buy Rent Hold";
+      break;
+
     default:
       title = 'Properties';
+      break;
+
   }    
     const showIcons = type === 'properties';
     const showBackButton = type !== 'properties';
@@ -26,10 +34,10 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
       <View style={styles.left} />
       {showBackButton && (
         <TouchableOpacity onPress={() => navigation.goBack()} 
-        style={styles.backButton}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        style={[styles.backButton, {zIndex: 1 }]}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // Increase touchable area
         >
-          <Icon name="arrow-back" size={30} color="#000000" />
+          <Icon name="arrow-back" size={30} color="#000000" pointerEvents="box-none" />
         </TouchableOpacity>
       )}
       <Text style={styles.title}>{title}</Text>
@@ -53,6 +61,9 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: '#ffffff', // Change this to the color you want
+    // flex: 1,
+    paddingBottom: -10, // Decrease this value to decrease the bottom padding
+
   },
   notchArea: {
     backgroundColor: '#ffffff', // Change this to the color you want
@@ -61,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 0, // Reduce padding here
+    paddingHorizontal: 10,
     backgroundColor: '#ffffff',
     height: 30,
   },

@@ -1,7 +1,12 @@
 // Import necessary modules
 import React, { useCallback } from 'react';
 import Slider, { MarkerType, setA11yMarkerPropsFunctionArgs } from 'react-native-a11y-slider';
-
+import MyMarker from './CustomPercentageSlider';
+import {
+  
+  StyleSheet,
+  
+} from "react-native";
 // Define the PercentageSlider component
 const PercentageSlider = ({ value, onValueChange }) => {
   // Define a callback function to set accessibility properties
@@ -16,7 +21,7 @@ const PercentageSlider = ({ value, onValueChange }) => {
         min: minValue,
         max: maxValue,
         now: value,
-        text: `${value}%`, // Include the percentage sign
+        text: `${value}%`, // Include the percentage sign after the value
       };
   
       return {
@@ -34,12 +39,34 @@ const PercentageSlider = ({ value, onValueChange }) => {
       min={0}
       max={100}
       values={[value]}
+      markerComponent={MyMarker}
       setA11yMarkerProps={setA11yProps}
-      style={{ width: '50%' }}
-      onValuesChangeFinish={(values) => onValueChange(values[0])}
+      style={{ width: '100%' }}
+      labelStyle={styles.labelStyle}
+      labelTextStyle={styles.labelTextStyle}
+
+      onValuesChangeFinish={(values) => onValueChange(`${values[0]}%`)}
     />
   );
 };
 
+const styles = StyleSheet.create({
+  
+  labelStyle: {
+    backgroundColor: "transparent",
+    borderRadius: 5,
+    color: "black",
+  },
+  labelTextStyle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: "italic",
+    color: "green",
+
+  },
+});
+
+
 // Export the PercentageSlider component
 export default PercentageSlider;
+
