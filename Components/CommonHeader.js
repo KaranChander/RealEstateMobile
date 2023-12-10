@@ -17,6 +17,9 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
     case 'buyRentHold':
       title = "Buy Rent Hold";
       break;
+    case 'propertyDetail':
+      title = "Property Detail";
+      break;
 
     default:
       title = 'Properties';

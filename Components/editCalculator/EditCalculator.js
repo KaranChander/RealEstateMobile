@@ -10,6 +10,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import PercentageSlider from './PercentageSlider';
 import Header from "../CommonHeader";
+
+
+
 const EditCalculator = ({ route }) => {
   const { property, defaults, data } = route.params;
   console.log("Editing settings !!!");
@@ -87,6 +90,7 @@ const EditCalculator = ({ route }) => {
         },
         body: JSON.stringify(requestBody),
       });
+      console.log(requestBody)
   
       if (response.ok) {
         const responseData = await response.json(); // Await the JSON parsing

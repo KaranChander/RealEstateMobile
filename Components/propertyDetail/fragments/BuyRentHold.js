@@ -43,20 +43,20 @@ const BuyRentHold = ({ data, property, defaults }) => {
           <Text style={styles.left} numberOfLines={1}>Total Monthly Profit/ Loss</Text>
         </View>
         <View style={styles.rightContainer}>
-          <Text>${(data["Annual Profit $"] || 0).toFixed(2)}</Text>
-          <Text>{(data["Appreciation ROI (After 1 Year) %"] || 0).toFixed(2)}%</Text>
-          <Text>{(data["Cash on Cash ROI %"] || 0).toFixed(2)}%</Text>
-          <Text>{(data["Cash on Cash ROI %"] || 0).toFixed(2)}%</Text>
-          <Text>${(data["Cashflow per Unit per Month $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Debt servicing costs $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Effective Gross Income\t$"] || 0).toFixed(2)}</Text>
-          <Text>{(data["Equity ROI (After 1 Year) %"] || 0).toFixed(2)}%</Text>
-          <Text>{(data["Expense to Income Ratio %"] || 0).toFixed(2)}%</Text>
-          <Text>${(data["Net Operating Income $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Real Purchase Price (RPP) $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Total Cash Required $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Total Expenses $"] || 0).toFixed(2)}</Text>
-          <Text>${(data["Total Monthly Profit or Loss $"] || 0).toFixed(2)}</Text>
+          <Text style={styles.right} numberOfLines={1}>  ${(data["Annual Profit $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>          
+          <Text style={styles.right} numberOfLines={1}>{(data["Appreciation ROI (After 1 Year) %"] || 0).toFixed(2)}%</Text>
+          <Text style={styles.right} numberOfLines={1}>{(data["Cash on Cash ROI %"] || 0).toFixed(2)}%</Text>
+          <Text style={styles.right} numberOfLines={1}>{(data["Cash on Cash ROI %"] || 0).toFixed(2)}%</Text>
+          <Text style={styles.right} numberOfLines={1}>${(data["Cashflow per Unit per Month $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right} numberOfLines={1}>${(data["Debt servicing costs $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right} numberOfLines={1}>${(data["Effective Gross Income\t$"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right} numberOfLines={1}>{(data["Equity ROI (After 1 Year) %"] || 0).toFixed(2)}%</Text>
+          <Text style={styles.right} numberOfLines={1}>{(data["Expense to Income Ratio %"] || 0).toFixed(2)}%</Text>
+          <Text style={styles.right} numberOfLines={1}>${(data["Net Operating Income $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right} numberOfLines={1}>${(data["Real Purchase Price (RPP) $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right } numberOfLines={1}>${(data["Total Cash Required $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right } numberOfLines={1}>${(data["Total Expenses $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+          <Text style={styles.right } numberOfLines={1}>${(data["Total Monthly Profit or Loss $"] || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
         </View>
       </View>
     </View>
@@ -69,42 +69,70 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 22,
+    
   },
   heading: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 24,
     paddingBottom: 10,
     paddingTop: 10,
   },
   editText: {
-    color: "blue", // You can change the color to fit your design
+    color: "#808080", // You can change the color to fit your design
     fontSize: 16,
+    fontWeight: "bold",
+    textDecorationLine: 'underline'
+
   },
 
   mainContainer: {
     paddingLeft: 22,
-    paddingRight: 22,
+    // paddingRight: 22,
     flexDirection: "row",
     width: "100%",
+    justifyContent: 'space-between',
+    // alignItems: "center"
   },
   leftContainer: {
-    color: "grey",
-    fontWeight: "bold",
-    flex: 1,
-    maxWidth: "80%",
+    // color: "grey",
+    // fontWeight: "bold",
+    // flex: 1,
+    // maxWidth: "100%",
   },
   left : { 
-    fontWeight: '400' ,
-    whiteSpace: "nowrap",
+    // fontWeight: '400' ,
+    // whiteSpace: "nowrap",
     overflow: "hidden", 
     textOverflow: "ellipsis",
+    // width: "50%",
+    // marginTop: "auto",
+    color: "#808080",
+    fontWeight: "600",
+    fontSize: 16,
+    padding: 10,
+
+  },
+  right: {
+    // overflow: "hidden", 
+    // textOverflow: "ellipsis",
+
+    padding: 10,
+    // width: '50%',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    fontSize: 16,
+    fontWeight: "500",
   },
   rightContainer: {
     paddingLeft: 22,
     color: "black",
     fontWeight: "bold",
     flex: 1,
-  },
+    overflow: "hidden", 
+    textOverflow: "ellipsis",
+
+
+  }
 });
 
 export default BuyRentHold;

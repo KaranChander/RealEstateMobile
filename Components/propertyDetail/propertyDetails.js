@@ -6,7 +6,7 @@ import BuyRentHold from './fragments/BuyRentHold';
 import HomeFacts from './fragments/HomeFacts';
 import About from './fragments/About';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
-
+import Header from '../CommonHeader';
 
 const PropertyDetails = ({ route, navigation,}) => {
   const { property } = route.params;
@@ -54,19 +54,31 @@ const PropertyDetails = ({ route, navigation,}) => {
   );
 
   return (
-    <ScrollView>
+    <>
+    
+    <Header onSearchPress={()=>{
+      // navigation.navigate('SearchBar'); // Replace 'SearchScreen' with the name of your search screen
+
+      }} onMapPress={() => {
+        // navigation.navigate('PropertiesMap', { propertiesData: propertiesData, propertyLat: selectedPlace.geometry.location.lat, propertyLon: selectedPlace.geometry.location.lng })
+      }} type="propertyDetail"></Header>
+    
+  <ScrollView style={{backgroundColor: '#FFFFFF'}}>
       {/* Back button */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backButtonText}>{'<'}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Image style={styles.image} source={data ? { uri: data.photos[0].href } : null} resizeMode="cover" />
       {/* Property Name */}
-      {data && <HeroSection property={data} />}
+      {calculator && data && <HeroSection data={calculator} property={data} />}
+      {data && <About data={data}  />}
+
       {calculator && data && defaults && <BuyRentHold data={calculator} property={data} defaults={defaults} />}
       {data && <PriceInsights data={data}  />}
       {data && <HomeFacts data={data} />}
-      {data && <About data={data}  />}
+      {/* {data && <About data={data}  />} */}
     </ScrollView>
+    </>
   );
 };
 

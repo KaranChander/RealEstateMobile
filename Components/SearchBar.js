@@ -41,7 +41,7 @@ const SearchBar = () => {
           
           } }
           query={{
-              key: 'AIzaSyDMQAb1deBPeXsj6plOwzkvunW2RwygMdw',
+              key: 'AIzaSyD2iSR4agIM27BeD0q_mvr_zwCi-OpnkFE',
               language: 'en',
               components: 'country:us', // restrict results to cities in the US
           }}

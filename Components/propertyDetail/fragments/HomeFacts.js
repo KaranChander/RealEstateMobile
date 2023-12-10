@@ -17,28 +17,27 @@ const HomeFacts = ({ data }) => {
     <View>
       <TouchableOpacity onPress={toggleHomeInfo}>
         <Text style={styles.heading}>
-          Home Facts {showHomeInfo ? "▲" : "▼"}
+          Home Facts 
         </Text>
       </TouchableOpacity>
 
-      {showHomeInfo &&
       <View style={styles.mainContainer}>
         <View style={styles.leftContainer}>
-          <Text>On App</Text>
-          <Text>HOA Fee</Text>
-          <Text>Built</Text>
-          <Text>Property Type</Text>
+          <Text style={styles.left}>On App</Text>
+          <Text style={styles.left}>HOA Fee</Text>
+          <Text style={styles.left}>Built</Text>
+          <Text style={styles.left}>Property Type</Text>
         </View>
 
         <View style={styles.rightContainer}>
-          <Text>{data.days_on_market || "none"}</Text>
-          <Text>${data.hoa.fee || "none"}</Text>
-          <Text>{data.description.year_built}</Text>
-          <Text>{data.description.sub_type || "none"}</Text>
+          <Text style={styles.right}>{data.days_on_market || "--"}</Text>
+          <Text style={styles.right}>${data.hoa.fee || "--"}</Text>
+          <Text style={styles.right}>{data.description.year_built}</Text>
+          <Text style={styles.right}>{data.description.sub_type || "--"}</Text>
         </View>
-      </View>}
+      </View>
 
-      <TouchableOpacity onPress={toggleAdditionalInfo}>
+      {/* <TouchableOpacity onPress={toggleAdditionalInfo}>
         <Text style={styles.additionalHeading}>
           Additional Home Facts {showAdditionalInfo ? "▲" : "▼"}
         </Text>
@@ -57,7 +56,7 @@ const HomeFacts = ({ data }) => {
             </View>
           ))}
         </View>
-      )}
+      )} */}
     </View>
   );
 };
@@ -65,7 +64,7 @@ const HomeFacts = ({ data }) => {
 const styles = StyleSheet.create({
   heading: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 24,
     paddingTop: 10,
     paddingLeft: 22,
   },
@@ -90,16 +89,43 @@ const styles = StyleSheet.create({
     paddingLeft: 22,
     paddingRight: 22,
     flexDirection: "row",
+    justifyContent: 'space-between',
+
   },
-  leftContainer: {
-    color: "grey",
-    fontWeight: 13,
+  left : { 
+    // fontWeight: '400' ,
+    // whiteSpace: "nowrap",
+    overflow: "hidden", 
+    textOverflow: "ellipsis",
+    // width: "50%",
+    // marginTop: "auto",
+    color: "#808080",
+    fontWeight: "600",
+    fontSize: 16,
+    padding: 10,
+
+  },
+  right: {
+    // overflow: "hidden", 
+    // textOverflow: "ellipsis",
+
+    padding: 10,
+    // width: '50%',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    fontSize: 16,
+    fontWeight: "500",
   },
   rightContainer: {
     paddingLeft: 22,
     color: "black",
-    fontWeight: 13,
-  },
+    fontWeight: "bold",
+    flex: 1,
+    overflow: "hidden", 
+    textOverflow: "ellipsis",
+
+
+  }
 });
 
 export default HomeFacts;
