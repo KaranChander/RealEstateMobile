@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const PropertyCard = ({ property, onPress }) => {
+  console.log(property);
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
       <View style={styles.card}>
@@ -10,7 +12,7 @@ const PropertyCard = ({ property, onPress }) => {
         <View style={styles.textContainer}>
         <View style={styles.row}>
             <Text style={styles.title}>{"$"+(property.list_price).toLocaleString()}</Text>
-            <Text style={styles.cashFlow}>{"$387/mo Cash Flow"}</Text>
+            <Text style={styles.cashFlow}>{"$" + property.data["Cashflow per Unit per Month $"].toFixed(2)  + " Cash Flow"}</Text>
           </View>
         <Text style={styles.details}>{property.location?.address?.line + " " + property.location?.address?.city + " " + property.location?.address?.state + " " + property.location?.address?.postal_code}</Text>
         <View style={styles.row}>

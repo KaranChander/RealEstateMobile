@@ -4,16 +4,12 @@ import PropertyCard from './PropertyCard';
 import Header from '../CommonHeader';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { plainToClass } from 'class-transformer';
-// const PropertyList = ({ properties }) => {
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Property from '../../Models/Property';
 import { SearchBar } from 'react-native-elements';
 
 const PropertyList = () => {
   var [apiSuccess, setAPISuccess] = useState(false)
   const route = useRoute();
-  // var selectedPlace = route.params?.selectedPlace;
-  // var [locationModel, setLocationModel] = useState(new Property(undefined, selectedPlace.state.lat, selectedPlace.state.long, selectedPlace.state.name, locatselectedPlaceion.state.stateName));
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   var [propertiesData, setPropertiesData] = useState([]);
@@ -32,24 +28,15 @@ const PropertyList = () => {
     if (selectedPlace) {
 
     console.log("working!")
-    const url = 'https://realty-in-us.p.rapidapi.com/properties/v3/list';
+    let city = selectedPlace.address_components[0].long_name;
+    let stateCode = selectedPlace.address_components[2].short_name;
+    const url = `http://18.205.25.241/property/list/v-2?from=0&to=10&city=${city}&stateCode=${stateCode}`;
     const options = {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'content-type': 'application/json',
-          'X-RapidAPI-Key': '862f6090ffmshb31aa1281374aaap118f5fjsn52c23f15dd50',
-          'X-RapidAPI-Host': 'realty-in-us.p.rapidapi.com',
         },
-        body: JSON.stringify({
-          limit: 200,
-          offset: 0,
-          // lat: locationModel.lat,
-          // lon: locationModel.long,
-          city: selectedPlace.address_components[0].long_name,
-          state_code: selectedPlace.address_components[2].short_name,     
-         status: ['for_sale'],
-        //   sort: {field: 'name' },
-        }),
+
       };
         fetch(url, options).then(
                 response => 
@@ -85,25 +72,20 @@ const PropertyList = () => {
                            }}
                      )
 
-                    // const filtered = properties.filter(property => {
-                    //         return property.list_price !== undefined || property.list_price !== null; 
-                    //  })
-            //     setPropertiesData(properties.slice(0, 50));
+
                       setPropertiesData(properties);
 
                 setAPISuccess(true)
 
         });
       }
-}, [selectedPlace])
+  }, [selectedPlace])
 
-      const navigation = useNavigation();
-      const getRandomNumber = () => {
-        return Math.floor(Math.random() * 3) + 1; // Generates a random number between 1 and 3
-      };
+  const navigation = useNavigation();
+  const getRandomNumber = () => {
+    return Math.floor(Math.random() * 3) + 1; // Generates a random number between 1 and 3
+  };
     
-    
-
   return (
     <View>
         <Header onSearchPress={()=>{
