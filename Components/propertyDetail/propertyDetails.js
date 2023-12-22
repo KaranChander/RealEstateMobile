@@ -8,6 +8,14 @@ import About from './fragments/About';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
 import Header from '../CommonHeader';
 
+/**
+ * The `PropertyDetails` function is a React component that displays details about a property,
+ * including an image, property name, and various sections such as hero section, about section,
+ * buy/rent/hold section, price insights, and home facts.
+ * @returns The `PropertyDetails` component is returning a JSX fragment that contains a `Header`
+ * component, a `ScrollView` component, and several other components such as `HeroSection`, `About`,
+ * `BuyRentHold`, `PriceInsights`, and `HomeFacts`.
+ */
 const PropertyDetails = ({ route, navigation,}) => {
   const { property } = route.params;
   const propertyId = property.property_id;
@@ -15,7 +23,6 @@ const PropertyDetails = ({ route, navigation,}) => {
   const [calculator, setCalculator] = useState(null);
   const [defaults, setDefaults] = useState(null);
 
-  // Use useFocusEffect instead of useEffect
   useFocusEffect(
     React.useCallback(() => {
       // Reset the state
@@ -68,7 +75,7 @@ const PropertyDetails = ({ route, navigation,}) => {
       {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backButtonText}>{'<'}</Text>
       </TouchableOpacity> */}
-      <Image style={styles.image} source={data ? { uri: data.photos[0].href } : null} resizeMode="cover" />
+      <Image style={styles.image} source={data ? { uri: data.photos[0].href.replace(/(.*)(\.jpg)/, '$1-w480_h360_x2$2') } : null} resizeMode="cover" />
       {/* Property Name */}
       {calculator && data && <HeroSection data={calculator} property={data} />}
       {data && <About data={data}  />}
@@ -76,7 +83,6 @@ const PropertyDetails = ({ route, navigation,}) => {
       {calculator && data && defaults && <BuyRentHold data={calculator} property={data} defaults={defaults} />}
       {data && <PriceInsights data={data}  />}
       {data && <HomeFacts data={data} />}
-      {/* {data && <About data={data}  />} */}
     </ScrollView>
     </>
   );

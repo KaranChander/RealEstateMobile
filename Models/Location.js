@@ -1,3 +1,5 @@
+/* The Location class is a JavaScript class that represents a location with latitude, longitude, and
+name properties. */
 class Location {
     lat
     long

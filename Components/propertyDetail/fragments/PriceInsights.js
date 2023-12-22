@@ -1,3 +1,8 @@
+/**
+ * The PriceInsights component is a React Native component that displays price information and allows
+ * the user to toggle the visibility of additional price details.
+ * @returns The PriceInsights component is being returned.
+ */
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
 
@@ -26,7 +31,7 @@ const PriceInsights = ({data}) => {
       </View>
 
       <View style={styles.rightContainer}>
-        <Text style={styles.right}>${data.list_price}</Text>
+        <Text style={styles.right}>${data.list_price.toLocaleString()}</Text>
         <Text style={styles.right}>${data.price_per_sqft}</Text>
       </View>
       </View>

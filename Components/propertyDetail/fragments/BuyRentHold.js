@@ -1,3 +1,9 @@
+/**
+ * The `BuyRentHold` component is a React Native component that displays a list of financial data and
+ * allows the user to navigate to an edit screen.
+ * @returns The BuyRentHold component is being returned, which renders a view containing various text
+ * elements displaying data.
+ */
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';

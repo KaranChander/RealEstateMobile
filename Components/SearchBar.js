@@ -1,3 +1,8 @@
+/**
+ * The above code is a React Native component that implements a search bar using the Google Places
+ * Autocomplete API.
+ * @returns The SearchBar component is being returned.
+ */
 import React,  { useState } from 'react';
 import { View, Button, Text, StyleSheet,TouchableOpacity, Animated } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -7,6 +12,14 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
+/**
+ * The `SearchBar` component is a JavaScript function that renders a search bar with autocomplete
+ * functionality for places using the Google Places Autocomplete API.
+ * @returns The `SearchBar` component is returning a `SafeAreaView` component that wraps a `View`
+ * component. Inside the `View` component, there is a `TouchableOpacity` component for the "Cancel"
+ * button and a `GooglePlacesAutocomplete` component for the search bar with autocomplete
+ * functionality. The `styles` object contains the styles for the components.
+ */
 const SearchBar = () => {
 
   const navigation = useNavigation();
@@ -23,6 +36,7 @@ const SearchBar = () => {
 
           }}>Cancel</Text>
         </TouchableOpacity>
+ 
     <GooglePlacesAutocomplete
           placeholder='Search place'
           fetchDetails={true}
@@ -34,16 +48,12 @@ const SearchBar = () => {
               params: { post: details },
               merge: true,
             });
-              // 'details' is provided when fetchDetails = true
-              // console.log(data, details);
-              // navigation.setParams({ selectedPlace: data });
-              // navigation.goBack();
-          
+             
           } }
           query={{
               key: 'AIzaSyD2iSR4agIM27BeD0q_mvr_zwCi-OpnkFE',
               language: 'en',
-              components: 'country:us', // restrict results to cities in the US
+              components: 'country:us', 
           }}
           styles={{
             container: {
@@ -61,8 +71,6 @@ const SearchBar = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // position: 'absolute',
-    // marginVertical: 40
   },
   cancelButton: {
     position: 'relative',

@@ -17,6 +17,10 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
+/**
+ * The HomeStackScreen function is a navigation stack that includes multiple screens for a property
+ * listing app.
+ */
 const HomeStackScreen = () => (
   <HomeStack.Navigator initialRouteName="PropertyList">
     <HomeStack.Screen name="PropertyList" component={PropertyList}   options={{ headerShown: false }} />

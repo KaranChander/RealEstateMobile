@@ -1,3 +1,13 @@
+/**
+ * The `GoogleMap` function is a React component that renders a Google Map using the
+ * `react-native-maps` library.
+ * @returns The `GoogleMap` component is being returned. It renders a `View` component with a `MapView`
+ * component inside it. The `MapView` component displays a map with a marker at the specified latitude
+ * and longitude. The `GoogleMap` component takes in three props: `latitude`, `longitude`, and
+ * `containerStyle`. The `containerStyle` prop is used to customize the style of the
+ */
+/* The line `import React from 'react';` is importing the React library, which is necessary for writing
+React components. React is a JavaScript library for building user interfaces. */
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';

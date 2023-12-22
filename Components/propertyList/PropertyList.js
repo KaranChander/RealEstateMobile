@@ -7,6 +7,12 @@ import { plainToClass } from 'class-transformer';
 import Property from '../../Models/Property';
 import { SearchBar } from 'react-native-elements';
 
+/**
+ * The `PropertyList` function is a React component that displays a list of properties fetched from an
+ * API based on the selected location and allows the user to search for properties and view property
+ * details.
+ * @returns The `PropertyList` component is being returned.
+ */
 const PropertyList = () => {
   var [apiSuccess, setAPISuccess] = useState(false)
   const route = useRoute();
@@ -25,11 +31,10 @@ const PropertyList = () => {
   useEffect(() => {
     console.log("working step 1")
 
-    if (selectedPlace) {
 
     console.log("working!")
-    let city = selectedPlace.address_components[0].long_name;
-    let stateCode = selectedPlace.address_components[2].short_name;
+    let city =  selectedPlace ? selectedPlace.address_components[0].long_name : "Boston";
+    let stateCode = selectedPlace ? selectedPlace.address_components[2].short_name : "MA";
     const url = `http://18.205.25.241/property/list/v-2?from=0&to=10&city=${city}&stateCode=${stateCode}`;
     const options = {
         method: 'GET',
@@ -46,6 +51,9 @@ const PropertyList = () => {
                 console.log(responseData)
                 for(const property in responseData["data"]["home_search"]["results"] ) {
                         let newProperty = plainToClass(Property, responseData["data"]["home_search"]["results"][property]);
+                        // if (newProperty.primary_photo.href === "string") {
+                          newProperty.primary_photo.href = newProperty.primary_photo.href.replace(/(.*)(\.jpg)/, '$1-w480_h360_x2$2');
+                        // }
                         properties.push(newProperty);
 
                 }
@@ -72,13 +80,10 @@ const PropertyList = () => {
                            }}
                      )
 
-
                       setPropertiesData(properties);
-
                 setAPISuccess(true)
 
         });
-      }
   }, [selectedPlace])
 
   const navigation = useNavigation();
@@ -87,12 +92,11 @@ const PropertyList = () => {
   };
     
   return (
-    <View>
+    <View style={{flex: 1}}>
         <Header onSearchPress={()=>{
-        navigation.navigate('SearchBar'); // Replace 'SearchScreen' with the name of your search screen
-
+        navigation.navigate('SearchBar'); 
         }} onMapPress={() => {
-          navigation.navigate('PropertiesMap', { propertiesData: propertiesData, propertyLat: selectedPlace.geometry.location.lat, propertyLon: selectedPlace.geometry.location.lng })
+          navigation.navigate('PropertiesMap', { propertiesData: propertiesData ?? [], propertyLat: selectedPlace.geometry?.location?.lat ?? 42.361145, propertyLon: selectedPlace.geometry?.location?.lng ?? -71.057083 })
         }} type="properties"></Header>
       <View style={styles.container}>
 
@@ -110,9 +114,7 @@ const PropertyList = () => {
       placeholder={(selectedPlace) ? selectedPlace.address_components[0].long_name + ", " + selectedPlace.address_components[2].short_name  :"Search places"}
 
       searchIcon = {true}
-      inputStyle={{
-       
-        // padding: 40,
+      inputStyle={{       
         backgroundColor: '#fff',
         fontSize: 16,
         padding: 0,
@@ -128,9 +130,6 @@ const PropertyList = () => {
           backgroundColor: 'transparent' 
           }}
         onPress={() => navigation.navigate('SearchBar')}
-        // refresh={(data)=> {
-        //   console.log("alright!")
-        // }   }
         >
                
          </TouchableOpacity>
@@ -158,18 +157,12 @@ const PropertyList = () => {
 const styles = StyleSheet.create({
    
     listContainer: {
-      padding: 10, // Add padding here
-      backgroundColor: '#f0f0f0', // Change background color here
-
+      padding: 10,
+      backgroundColor: '#f0f0f0', 
+      marginBottom: 200
     },
     container: {
-      // marginLeft: 20,
-      // marginRight: 20,
-      // marginTop: 0,
-      // height: 100, // Adjust this value as needed
-      // justifyContent: 'center',
-      // width: '100%', // This will make the container take up the full width
-
+     
     },
   });
 

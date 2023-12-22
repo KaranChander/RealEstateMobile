@@ -1,3 +1,4 @@
+/* The Property class represents a property listing with various attributes and methods. */
 class Property {
     constructor() {
         this.__typename = "";

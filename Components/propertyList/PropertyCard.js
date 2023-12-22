@@ -2,6 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+/**
+ * The `PropertyCard` component is a reusable component in JavaScript that renders a card with property
+ * details and an image.
+ * @returns The PropertyCard component is being returned.
+ */
 const PropertyCard = ({ property, onPress }) => {
   console.log(property);
 
@@ -12,7 +17,7 @@ const PropertyCard = ({ property, onPress }) => {
         <View style={styles.textContainer}>
         <View style={styles.row}>
             <Text style={styles.title}>{"$"+(property.list_price).toLocaleString()}</Text>
-            <Text style={styles.cashFlow}>{"$" + property.data["Cashflow per Unit per Month $"].toFixed(2)  + " Cash Flow"}</Text>
+            <Text style={styles.cashFlow}>{"$" + property.data["Cashflow per Unit per Month $"].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Cash Flow"}</Text>
           </View>
         <Text style={styles.details}>{property.location?.address?.line + " " + property.location?.address?.city + " " + property.location?.address?.state + " " + property.location?.address?.postal_code}</Text>
         <View style={styles.row}>
@@ -24,7 +29,6 @@ const PropertyCard = ({ property, onPress }) => {
         <Text style={styles.details}>{(property.description?.lot_sqft??0).toLocaleString()} sq ft</Text> 
         </View> 
       </View>
-      {/* <Text style={styles.details}>{(property.description?.lot_sqft??0).toLocaleString()} sq ft</Text>  */}
       
    
     </ TouchableOpacity>

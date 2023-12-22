@@ -1,3 +1,10 @@
+/**
+ * The `HeroSection` component renders a section of a property listing with address, details, pricing
+ * information, and a Google Map showing the property location.
+ * @returns The HeroSection component is returning a View component that contains the property address,
+ * property details (beds, baths, sq ft), property information (price, cash flow), and a GoogleMap
+ * component with a Marker for the property location.
+ */
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import GoogleMap, {Marker} from 'react-native-maps';
@@ -33,7 +40,7 @@ const HeroSection = ({data, property}) => {
           <Text>Price</Text>
         </View>
         <View style={styles.propertyInfo}>
-          <Text style={styles.header}>${(data["Cashflow per Unit per Month $"] || 0).toFixed(2).toLocaleString()}/mo</Text>
+          <Text style={styles.header}>${(data["Cashflow per Unit per Month $"] || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mo</Text>
           <Text>Cash Flow</Text>
         </View>
         {/* <View style={styles.propertyInfo}>

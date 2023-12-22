@@ -1,3 +1,13 @@
+/**
+ * The `About` component is a React Native component that displays a heading, a description, and a
+ * "Read More" button. The description text is initially truncated to a maximum of 4 lines, but can be
+ * expanded to show the full text when the "Read More" button is pressed.
+ * @returns The About component is returning a View component that contains a heading, a description,
+ * and a "Read More" button. The heading is a Text component that displays the text "About this home".
+ * The description is also a Text component that displays the description text passed in through the
+ * data prop. The numberOfLines prop is used to limit the number of lines displayed based on the state
+ * of showFullDescription.
+ */
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
 
@@ -6,9 +16,7 @@ const About = ({data}) => {
   const [lines, setLines] = React.useState(4);
   let initialLines = 4;
 
-  // const toggleShowAbout = () => {
-  //   setShowAbout(!showAbout);
-  // };
+ 
 
   const onTextLayout = ({ nativeEvent: { lines: l } }) => {
     if (initialLines !== l.length) {

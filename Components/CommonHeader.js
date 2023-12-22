@@ -1,9 +1,16 @@
+/* The line `import React from 'react';` is importing the React library, which is necessary for writing
+React components. It allows you to use JSX syntax and create reusable UI components. */
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+/**
+ * The `Header` component is a reusable header component in a React Native app that displays a title
+ * and optional icons based on the `type` prop.
+ * @returns The Header component is being returned.
+ */
 const Header = ({ onSearchPress, onMapPress, type }) => {
   let title;
   switch(type) {
@@ -32,13 +39,12 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    {/* <View style={styles.notchArea} /> */}
     <View style={styles.header}>
       <View style={styles.left} />
       {showBackButton && (
         <TouchableOpacity onPress={() => navigation.goBack()} 
         style={[styles.backButton, {zIndex: 1 }]}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // Increase touchable area
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} 
         >
           <Icon name="arrow-back" size={30} color="#000000" pointerEvents="box-none" />
         </TouchableOpacity>
@@ -49,10 +55,6 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
             <TouchableOpacity style={styles.icon} onPress={onMapPress}>
             <Icon name="map" size={30} color="#008000" />
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.icon} onPress={onSearchPress}>
-            <Icon name="search" size={30} color="#008000" />
-          </TouchableOpacity> */}
-         
         </View>
       )}
       </View>      
@@ -63,13 +65,12 @@ const Header = ({ onSearchPress, onMapPress, type }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#ffffff', // Change this to the color you want
-    // flex: 1,
-    paddingBottom: -10, // Decrease this value to decrease the bottom padding
+    backgroundColor: '#ffffff',
+    paddingBottom: -10, 
 
   },
   notchArea: {
-    backgroundColor: '#ffffff', // Change this to the color you want
+    backgroundColor: '#ffffff', 
   },
   header: {
     flexDirection: 'row',
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   left: {
-    width: 30, // Adjust this width to balance the search icon
+    width: 30,
   },
   backButton: {
     position: 'absolute',
@@ -89,9 +90,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    position: 'absolute', // Add this line
-    left: 0, // Add this line
-    right: 0, // Add this line
+    position: 'absolute',
+    left: 0, 
+    right: 0,
 
     textAlign: 'center',
   },
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   icon: {
-    marginHorizontal: 5, // Add margin here
+    marginHorizontal: 5,
   },
 });
 

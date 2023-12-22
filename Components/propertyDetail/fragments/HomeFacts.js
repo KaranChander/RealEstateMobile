@@ -1,3 +1,8 @@
+/**
+ * The `HomeFacts` component is a React Native component that displays basic information about a home,
+ * such as days on the market, HOA fee, year built, and property type.
+ * @returns The `HomeFacts` component is being returned.
+ */
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 

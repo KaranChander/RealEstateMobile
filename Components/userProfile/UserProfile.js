@@ -1,11 +1,20 @@
+/**
+ * The above code defines a React component called UserProfile that displays a user profile with
+ * options such as About, Glossary, and Settings, and a logout button.
+ * @returns The UserProfile component is being returned.
+ */
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import PDFScreen from './GlossaryPdfViewer';
-import { NavigationAction } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * The UserProfile function is a React component that displays a user's profile information, including
+ * their name and profile picture, as well as options for navigating to different sections of the app
+ * and a logout button.
+ * @returns The UserProfile component is returning a View component that contains the user's profile
+ * information, options section, and a logout button.
+ */
 const UserProfile = () => {
   const navigation = useNavigation();
 
@@ -25,7 +34,6 @@ const UserProfile = () => {
         if (option === 'Glossary') {
           navigation.navigate('Glossary');
         }
-        // Add navigation for other options if needed
       }}
     >
       <Text style={styles.optionText}>{option}</Text>
